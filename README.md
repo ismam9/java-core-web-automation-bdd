@@ -1,3 +1,6 @@
+> [!IMPORTANT]
+> I would love for any bugs, improvements, changes, or interesting data to be commented on. These technologies change every day, and it's normal to catch someone being outdated. I hope it helps you! :)
+
 # Resume
 
 I am a Software QA Automation Engineer with experience primarily in Functional Testing for Web Browsers and Mobile Applications.
@@ -33,11 +36,17 @@ More specifically Cucumber allows the creation of
 executable specifications written in plain text using the Gherkin syntax. Gherkin is a simple, structured language that uses keywords like Given, When, Then, And, and But to describe the behavior of a system in a way that is understandable 
 by non-technical stakeholders. Cucumber then translates these specifications into automated tests that can be executed by QA engineers.
 
-Also a key thing about the Framework is that uses a design patter called POM (Page Object Model).
-Page Object Model is a design pattern (as we said) used in test automation to enhance test maintenance and readability. 
-It involves creating separate classes for each web Page** or component of a Web Application, encapsulating the interactions with those elements within their respective classes. These page classes expose methods that represent the actions 
-that can be performed on the page, making the test scripts more readable and maintainable. So, Selenium WebDriver it is completed with POM by structuring the test code in a way that separates the page-specific actions, the page objects from
-the test case. This separation of concerns improves the maintainability and scalability of the test automation codebase.
+Also a key thing about the Framework is that uses a design patter called POM **(Page Object Model).**
+
+**Page Object Model is a design pattern** (as we said) used in test automation to enhance test maintenance and readability. 
+It involves creating separate classes for each web Page** or component of a Web Application, encapsulating the interactions with those elements within their respective classes. These page classes expose methods that represent the actions that can be performed on the page, making the test scripts more readable and maintainable. 
+
+So, Selenium WebDriver it is completed with POM by structuring the test code in a way that separates the page-specific actions, the page objects from the test case. This separation of concerns improves the maintainability and scalability of the test automation codebase.
+##
+
+
+<details>
+<summary>Tools, Project Structure & pom.xml</summary>
 
 # Tools
 Selenium WebDriver: This tool is employed for controlling web browsers and automating web application testing. Selenium WebDriver allows testers to interact with web elements, simulate user actions, and validate application behavior 
@@ -62,8 +71,10 @@ to provide comprehensive reports with visual representations of test results, en
 [Allure on Junit5 & CucumberJVM](https://allurereport.org/docs/cucumberjvm/)
 [Starting Allure Project Generator](https://allurereport.org/start/). For us this can be usefull to see what dependencies we need and how we should implement the build of maven for generating and serve de Allure Report.
 If you use this tool. Remeber that we are using Java Language, Cucumber Framework (Do not select Junit) & Junit-platform for the runner option
+</details>
 
---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+#
+
 Now we are going to discuss something that I always find interesting when starting from scratch with any framework or development, which is how the project directories will be structured. 
 We will also discuss the dependencies in the pom.xml required for implementing the framework and the most important details of the pom. 
 Finally, we will briefly discuss the purpose of the files that I consider most important and some points of interest about these files.
@@ -114,6 +125,7 @@ java-core-web-automation-bdd
 > - HomePage is it used on HomePageSteps and refers to the Objects (HomePageObjects) that were passed on the HomePageSteps. Also the HomePage uses the WebActions where are the method relationaed with the base actions that can be performed on the driver
 > - On HomePageObject finally we use the driver of WebDriver to use the already init driver.
 
+#
 # 2. pom.xml & Mandatory dependencies
 
 This may be differ from your. Depends on the name of the package of your maven project. Does not have to be the same.
@@ -175,10 +187,13 @@ This dependecyManagent is mandatory for being able to use Allure. If you downloa
 > - The <type> element specifies the packaging type of the dependency, which is set to pom indicating that these are POM files.
 > - The <scope> element defines the scope of the dependency. In this case, it is set to import, which means that the dependencies defined in these BOM files will be imported into the project's dependency management.
 
-> [!CAUTION]
-> If you do not have the correct dependecies (or for example not having the <depedencyManagment>, or having the junit5 dependencies instead of the Cucumber-JVM ones, etc) & you may seen problems relationated with compabilty between
-> dependecies. You will see your maven dependecy section all marked as red. You might re-do the pom.xml following the steps we share on 'Main classes & Functionality'.
 
+> [!CAUTION]
+> If you do not have the correct dependecies (or for example not having the `<depedencyManagment>`, or having the junit5 dependencies instead of the Cucumber-JVM ones, etc) & you may seen problems relationated with compabilty between
+dependecies. You will see your maven dependecy section all marked as red. You might re-do the pom.xml using.
+
+# 
+# 3. Build Configuration
 Finally the only section to comment it is the build section.
 ```
 <build>
@@ -228,7 +243,7 @@ Finally the only section to comment it is the build section.
     </build>
 ```
 > - The <build> section in a Maven POM file configures various aspects of the build process, including which plugins should be executed and how they should be configured.
-> - Within the <plugins> element, different Maven plugins are defined, each with its own <plugin> configuration.
+> - Within the `<plugins>` element, different Maven plugins are defined, each with its own `<plugin>` configuration.
 
 1. Maven Surefire Plugin:
 This plugin is responsible for running unit tests in Maven projects.
@@ -252,35 +267,68 @@ Version 3.13.0 is specified.
 > [!NOTE]
 > You should not change anything about the plugins configurated on the vuild section.
 
+# 
+# 4. Run
 
--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-RESUME OF SELENIUM & SELENIUM ACTUAL TOOLS
+We can run the Maven project in different ways, depending on which stage of development we are in.
+
+Specifically, if we are developing test cases and want to quickly execute a single test case, I recommend:
+First, install the IntelliJ plugins 'Cucumber for Java' and 'Gherkin'. Besides helping us create our features and steps, this will allow us to execute the test case directly from our feature file.
+Once, we have done this we will see a 'Play Green Buttom' available in Intellij in every teste case in our feature file, so we can execute one of them or the complete feature.
+
+Additionally, we can run all the features from our TestRunner. It will also appear a 'Play Green Buttom' on this class for execution all the test cases.
+
+Finally, we can execute our test cases using Maven commands. Here are some examples:
+
+`test -Dbrowser=edge -Dplatform=windows`. This command will execute all test cases, specifying the browser and platform.
+`test -Dbrowser=edge -Dplatform=windows`. "-Dcucumber.options=--tags '@debug1 or @debug2'": This command will help us execute certain test cases that we specify with the @tag.
+`test -Dbrowser=edge allure:report`. This command will execute all test cases and generate a report in the /target directory. If you have the report generated (you can see it on the /target directory) as /allure-results directory on the target forlder the you can allways use `allure:serve` to run the allure server, view the report generated with the data you have on /target/allure-results.
+`test -DBrowser=edge -Dplatform=windows`. -Dcucumber.options=--tags '@primera and @segunda' allure:report allure:serve: This command is the most comprehensive, as it will execute the test cases specified in the @tags, generate the report in the /target directory, and also start the allure server to view the report.
+
+> [!WARNING]
+> If you have problems running yout test cases because of driver problems. **You can delete your driver and see if Selenium is capable of Downloading it**, then you know the problem is the driver you have. Make sure that you have the correct driver on the /driver directory. If you can't figure it out the correct driver version see on your browser (for example chrome) the version you are using. **If this is not the problem, maybe your Selenium version does not support the most recent Chrome Version.**
+
+
+
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+> [!NOTE]
+> This note clarify all the basics about Selenium and his tools like Webdriver, IDE, Grid, etc.
+<details>
+
+<summary>Selenium Info </summary>
+
+
 Selenium is a widely used open-source set of tools for automating testing in web applications. It allows developers and testers to programmatically automate interaction with web browsers, thereby facilitating the conduct of functional 
 tests in various scenarios and conditions.
 
 Here is a detailed description of the main components of Selenium:
 
-Selenium WebDriver: Selenium WebDriver is the primary automation tool within the Selenium toolkit. It provides an API for programmatically interacting with web browsers. Developers can write scripts in various programming languages 
+1. Selenium WebDriver: Selenium WebDriver is the primary automation tool within the Selenium toolkit. It provides an API for programmatically interacting with web browsers. Developers can write scripts in various programming languages 
 (such as Java, Python, C#, etc.) to automate user actions in the browser, such as clicking buttons, filling out forms, navigating web pages, and verifying elements on the page. WebDriver is powerful and flexible, allowing for a wide 
 range of interactions with the user interface elements of a web application.
-Selenium IDE: Selenium IDE is an open-source test automation development tool that enables recording and playback of interactions with the browser. It is a browser extension that facilitates the rapid creation of automated tests 
+2. Selenium IDE: Selenium IDE is an open-source test automation development tool that enables recording and playback of interactions with the browser. It is a browser extension that facilitates the rapid creation of automated tests 
 through its graphical user interface. Users can record their actions in a browser and then replay, edit, and debug them as needed. Selenium IDE is useful for quick and simple tests but may have limitations compared to WebDriver in 
 terms of complexity and flexibility.
-Selenium Grid: Selenium Grid is a tool that allows running Selenium tests in parallel on multiple machines and browsers simultaneously. It enables distributing tests among several nodes (virtual or physical machines) to speed up the 
+3. Selenium Grid: Selenium Grid is a tool that allows running Selenium tests in parallel on multiple machines and browsers simultaneously. It enables distributing tests among several nodes (virtual or physical machines) to speed up the 
 testing process and increase platform coverage. Selenium Grid consists of a "hub" node that coordinates test requests and multiple "node" nodes that execute tests in different browser and platform environments. This is especially useful 
 for efficiently conducting compatibility tests on different browsers and operating systems.
 
 Regarding how the topic of executions on different platforms, environments, and serial and parallel executions comes into play, here are some considerations:
-Different Platforms and Environments: Selenium WebDriver allows the execution of tests on a wide variety of platforms and environments, including different operating systems (Windows, macOS, Linux) and web browsers 
-(Chrome, Firefox, Safari, etc.). This is achieved by installing and configuring specific drivers for each browser and operating system. For example, running tests on Chrome requires a Chrome driver (such as ChromeDriver) installed on 
+- Different Platforms and Environments: **Selenium WebDriver allows the execution of tests on a wide variety of platforms and environments, including different operating systems (Windows, macOS, Linux) and web browsers 
+(Chrome, Firefox, Safari, etc.).** This is achieved by installing and configuring specific drivers for each browser and operating system. For example, running tests on Chrome requires a Chrome driver (such as ChromeDriver) installed on 
 the system.
-Serial and Parallel Executions: Selenium WebDriver can execute tests both serially and in parallel, depending on the test requirements and environment configuration. Serial execution involves running a sequence of tests one after another,
-while parallel execution involves running multiple tests simultaneously in different browsers or platforms. Selenium Grid facilitates parallel execution by distributing tests among multiple nodes. This can significantly improve the speed 
-of test execution and allow faster coverage of test cases in multiple platform and browser configurations.
+
+- Serial and Parallel Executions: **Selenium WebDriver can execute tests both serially and in parallel,** depending on the test requirements and environment configuration. Serial execution involves running a sequence of tests one after another, while parallel execution involves running multiple tests simultaneously in different browsers or platforms. **Selenium Grid facilitates parallel** execution by distributing tests among multiple nodes. This can significantly improve the speed of test execution and allow faster coverage of test cases in multiple platform and browser configurations.
+
 In summary, Selenium is a powerful suite of tools for web application test automation, with core components such as Selenium WebDriver, Selenium IDE, and Selenium Grid. It allows users to automate interactions with web browsers, execute 
 tests on different platforms and environments, and perform both serial and parallel executions to improve testing efficiency and coverage
 
-Lastly, Previously, there was also Selenium Remote Control (RC), an outdated Selenium tool that has been replaced by WebDriver. Selenium RC allowed users to write tests in various programming languages such as Java, C#, Python, etc., 
+Lastly, Previously, there was also **Selenium Remote Control (RC), an outdated Selenium tool that has been replaced by WebDriver.** Selenium RC allowed users to write tests in various programming languages such as Java, C#, Python, etc., 
 and run these tests across multiple browsers. However, Selenium RC had limitations and was discontinued in favor of WebDriver, which provides a more robust API and better architecture for test automation. Therefore, in the current 
 context of Selenium, Selenium RC would not be used, and using WebDriver for test automation would be recommended instead.
--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+</details>
+
+# TO DO
+- [ ] Cucmber task - #rerun of failed tests
+- [ ] Allure task - Execute allure for composing a report as a single-file-html. Has been done on [java-core-web-automation-bdd-allure](https://github.com/ismam9/java-core-web-automation-bdd-allure)
+- [ ] Selenium task - Create more methods relationated with the actions that we can perform on the Web (WebActions.java class)
