@@ -332,3 +332,4 @@ context of Selenium, Selenium RC would not be used, and using WebDriver for test
 - [ ] Cucmber task - #rerun of failed tests
 - [ ] Allure task - Execute allure for composing a report as a single-file-html. Has been done on [java-core-web-automation-bdd-allure](https://github.com/ismam9/java-core-web-automation-bdd-allure)
 - [ ] Selenium task - Create more methods relationated with the actions that we can perform on the Web (WebActions.java class)
+- [ ] Util Task - Make OTP Mobile number phone option possible on the framework. Use Vonage or Twilo
